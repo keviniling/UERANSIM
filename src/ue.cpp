@@ -99,7 +99,9 @@ static UeControllerTask *g_controllerTask;
 
 static nr::ue::UeConfig *ReadConfigYaml()
 {
+    // ue configuration
     auto *result = new nr::ue::UeConfig();
+    // load config file
     auto config = YAML::LoadFile(g_options.configFile);
 
     result->hplmn.mcc = yaml::GetInt32(config, "mcc", 1, 999);
@@ -134,6 +136,11 @@ static nr::ue::UeConfig *ReadConfigYaml()
         }
     }
 
+    // kai: add gmm capability
+    yaml::AssertHasField(config, "configured-GmmCapability");
+    result->configuredGmmCapability.cp_ciot_5gs_optimization_support = yaml::GetBool(config["configured-GmmCapability"], "5gsCPOptimizationSupport");
+    result->configuredGmmCapability.cp_ciot_5gs_optimization_use = yaml::GetBool(config["configured-GmmCapability"], "5gsCPOptimizationUse");
+
     result->key = OctetString::FromHex(yaml::GetString(config, "key", 32, 32));
     result->opC = OctetString::FromHex(yaml::GetString(config, "op", 32, 32));
     result->amf = OctetString::FromHex(yaml::GetString(config, "amf", 4, 4));
@@ -153,6 +160,7 @@ static nr::ue::UeConfig *ReadConfigYaml()
     yaml::AssertHasField(config, "integrity");
     yaml::AssertHasField(config, "ciphering");
 
+    // kai: the most easiest way is to modify the algorithms here...... but it is not appropriate
     result->supportedAlgs.nia1 = yaml::GetBool(config["integrity"], "IA1");
     result->supportedAlgs.nia2 = yaml::GetBool(config["integrity"], "IA2");
     result->supportedAlgs.nia3 = yaml::GetBool(config["integrity"], "IA3");
@@ -325,6 +333,7 @@ static void IncrementNumber(std::string &s, int delta)
     s = LargeSum(s, std::to_string(delta));
 }
 
+// Kai: add capability, what's the meaning here?
 static nr::ue::UeConfig *GetConfigByUe(int ueIndex)
 {
     auto *c = new nr::ue::UeConfig();
@@ -338,6 +347,7 @@ static nr::ue::UeConfig *GetConfigByUe(int ueIndex)
     c->hplmn = g_refConfig->hplmn;
     c->configuredNssai = g_refConfig->configuredNssai;
     c->defaultConfiguredNssai = g_refConfig->defaultConfiguredNssai;
+    c->configuredGmmCapability = g_refConfig->configuredGmmCapability;
     c->supportedAlgs = g_refConfig->supportedAlgs;
     c->gnbSearchList = g_refConfig->gnbSearchList;
     c->defaultSessions = g_refConfig->defaultSessions;

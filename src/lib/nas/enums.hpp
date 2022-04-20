@@ -24,6 +24,19 @@ enum class EEpcNasSupported
     SUPPORTED = 0b1
 };
 
+/* Kai: add 5gs CP optimization */
+enum class E5GSNasCPOptimizationSupport
+{
+    NOT_SUPPORTED = 0b0,
+    SUPPORTED = 0b1
+};
+
+enum class E5GSNasCPOptimizationUse
+{
+    NOT_PREFER = 0b0,
+    PREFER = 0b1
+};
+
 enum class EExtendedProtocolDiscriminator
 {
     MOBILITY_MANAGEMENT_MESSAGES = 0b01111110,

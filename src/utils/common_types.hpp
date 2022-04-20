@@ -59,6 +59,17 @@ struct NetworkSlice
     void addIfNotExists(const SingleSlice &slice);
 };
 
+// Kai: add 5gmm capability, used for read configs from yaml file
+struct GmmCapability
+{
+    // ToDo: add more capability;
+    //    bool s1Mod{};
+    //    bool hoAttach{};
+    //    bool lpp{};
+    bool cp_ciot_5gs_optimization_support{};
+    bool cp_ciot_5gs_optimization_use{};
+};
+
 enum class PduSessionType
 {
     IPv4,

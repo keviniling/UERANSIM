@@ -106,6 +106,9 @@ struct UeConfig
     IntegrityMaxDataRateConfig integrityMaxRate{};
     NetworkSlice defaultConfiguredNssai{};
     NetworkSlice configuredNssai{};
+    // kai: add gmm capability
+//    GmmCapability defaultGmmCapability{};
+    GmmCapability configuredGmmCapability{};
 
     struct
     {

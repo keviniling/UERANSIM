@@ -447,14 +447,17 @@ struct IE5gsDrxParameters : InformationElement4
     static void Encode(const IE5gsDrxParameters &ie, OctetString &stream);
 };
 
+/* Kai: add 5gs CP optimization*/
 struct IE5gMmCapability : InformationElement4
 {
     EEpcNasSupported s1Mode{};
     EHandoverAttachSupported hoAttach{};
     ELtePositioningProtocolCapability lpp{};
+    E5GSNasCPOptimizationSupport cp_ciot_5gs_optimization_support{};
+    E5GSNasCPOptimizationUse cp_ciot_5gs_optimization_use{};
 
     IE5gMmCapability() = default;
-    IE5gMmCapability(EEpcNasSupported s1Mode, EHandoverAttachSupported hoAttach, ELtePositioningProtocolCapability lpp);
+    IE5gMmCapability(EEpcNasSupported s1Mode, EHandoverAttachSupported hoAttach, ELtePositioningProtocolCapability lpp, E5GSNasCPOptimizationSupport cp_ciot_5gs_optimization_support, E5GSNasCPOptimizationUse cp_ciot_5gs_optimization_use);
 
     static IE5gMmCapability Decode(const OctetView &stream, int length);
     static void Encode(const IE5gMmCapability &ie, OctetString &stream);

@@ -856,12 +856,16 @@ void IE5gsDrxParameters::Encode(const IE5gsDrxParameters &ie, OctetString &strea
     stream.appendOctet(static_cast<int>(ie.value));
 }
 
+/* Kai: add the 5gs cp optimization*/
 IE5gMmCapability::IE5gMmCapability(EEpcNasSupported s1Mode, EHandoverAttachSupported hoAttach,
-                                   ELtePositioningProtocolCapability lpp)
-    : s1Mode(s1Mode), hoAttach(hoAttach), lpp(lpp)
+                                   ELtePositioningProtocolCapability lpp,
+                                   E5GSNasCPOptimizationSupport cp_ciot_5gs_optimization_support,
+                                   E5GSNasCPOptimizationUse cp_ciot_5gs_optimization_use)
+    : s1Mode(s1Mode), hoAttach(hoAttach), lpp(lpp), cp_ciot_5gs_optimization_support(cp_ciot_5gs_optimization_support), cp_ciot_5gs_optimization_use(cp_ciot_5gs_optimization_use)
 {
 }
 
+// Kai: decode 5gs cp optimization
 IE5gMmCapability IE5gMmCapability::Decode(const OctetView &stream, int length)
 {
     auto octet = stream.read();
@@ -870,9 +874,12 @@ IE5gMmCapability IE5gMmCapability::Decode(const OctetView &stream, int length)
     r.s1Mode = static_cast<EEpcNasSupported>(octet.bit(0));
     r.hoAttach = static_cast<EHandoverAttachSupported>(octet.bit(1));
     r.lpp = static_cast<ELtePositioningProtocolCapability>(octet.bit(2));
+    r.cp_ciot_5gs_optimization_support = static_cast<E5GSNasCPOptimizationSupport>(octet.bit(0));
+    r.cp_ciot_5gs_optimization_use = static_cast<E5GSNasCPOptimizationUse>(octet.bit(0));
     return r;
 }
 
+// Kai: encode 5gs cp optimization
 void IE5gMmCapability::Encode(const IE5gMmCapability &ie, OctetString &stream)
 {
     int octet = 0;
@@ -881,6 +888,10 @@ void IE5gMmCapability::Encode(const IE5gMmCapability &ie, OctetString &stream)
     octet |= static_cast<int>(ie.hoAttach);
     octet <<= 1;
     octet |= static_cast<int>(ie.s1Mode);
+    ctet <<= 1;
+    octet |= static_cast<int>(ie.cp_ciot_5gs_optimization_support);
+    ctet <<= 1;
+    octet |= static_cast<int>(ie.cp_ciot_5gs_optimization_use);
     stream.appendOctet(octet);
 }
 
