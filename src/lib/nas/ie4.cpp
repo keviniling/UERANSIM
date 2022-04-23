@@ -888,9 +888,9 @@ void IE5gMmCapability::Encode(const IE5gMmCapability &ie, OctetString &stream)
     octet |= static_cast<int>(ie.hoAttach);
     octet <<= 1;
     octet |= static_cast<int>(ie.s1Mode);
-    ctet <<= 1;
+    octet <<= 1;
     octet |= static_cast<int>(ie.cp_ciot_5gs_optimization_support);
-    ctet <<= 1;
+    octet <<= 1;
     octet |= static_cast<int>(ie.cp_ciot_5gs_optimization_use);
     stream.appendOctet(octet);
 }

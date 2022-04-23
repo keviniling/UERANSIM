@@ -92,12 +92,12 @@ EProcRc NasMm::sendInitialRegistration(EInitialRegCause regCause)
     request->mmCapability->cp_ciot_5gs_optimization_support = nas::E5GSNasCPOptimizationSupport::NOT_SUPPORTED;
     request->mmCapability->cp_ciot_5gs_optimization_use = nas::E5GSNasCPOptimizationUse::NOT_PREFER;
 
-    if (m_base->config->configuredGmmCapability->get().hasValue()){
-        request->mmCapability->cp_ciot_5gs_optimization_support = static_cast<nas::E5GSNasCPOptimizationSupport>(
-            m_base->config->configuredGmmCapability.cp_ciot_5gs_optimization_support);
-        request->mmCapability->cp_ciot_5gs_optimization_use = static_cast<nas::E5GSNasCPOptimizationUse>(
-            m_base->config->configuredGmmCapability.cp_ciot_5gs_optimization_use);
-    }
+//    if (m_base->config->configuredGmmCapability->get().hasValue()){
+    request->mmCapability->cp_ciot_5gs_optimization_support = static_cast<nas::E5GSNasCPOptimizationSupport>(
+        m_base->config->configuredGmmCapability.cp_ciot_5gs_optimization_support);
+    request->mmCapability->cp_ciot_5gs_optimization_use = static_cast<nas::E5GSNasCPOptimizationUse>(
+        m_base->config->configuredGmmCapability.cp_ciot_5gs_optimization_use);
+//    }
 
     // Assign other fields
     request->mobileIdentity = getOrGeneratePreferredId();
