@@ -68,3 +68,12 @@ ciphering:
 integrityMaxRate:
   uplink: 'full'
   downlink: 'full'
+
+# 5GMM Capability
+configured-GmmCapability:
+  5gsCPOptimizationSupport: true
+
+# 5G Update Type
+configured-5gUpdateType:
+  5gsCPOptimization: true
+

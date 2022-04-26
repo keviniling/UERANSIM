@@ -449,14 +449,17 @@ struct IE5gsDrxParameters : InformationElement4
     static void Encode(const IE5gsDrxParameters &ie, OctetString &stream);
 };
 
+//Kai: update for CIoT optimization
 struct IE5gMmCapability : InformationElement4
 {
     EEpcNasSupported s1Mode{};
     EHandoverAttachSupported hoAttach{};
     ELtePositioningProtocolCapability lpp{};
+    E5gCpCIoT gCpCIoT{};
+
 
     IE5gMmCapability() = default;
-    IE5gMmCapability(EEpcNasSupported s1Mode, EHandoverAttachSupported hoAttach, ELtePositioningProtocolCapability lpp);
+    IE5gMmCapability(EEpcNasSupported s1Mode, EHandoverAttachSupported hoAttach, ELtePositioningProtocolCapability lpp, E5gCpCIoT gCpCIoT);
 
     static IE5gMmCapability Decode(const OctetView &stream, int length);
     static void Encode(const IE5gMmCapability &ie, OctetString &stream);

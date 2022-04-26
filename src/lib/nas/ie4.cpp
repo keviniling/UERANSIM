@@ -867,9 +867,10 @@ void IE5gsDrxParameters::Encode(const IE5gsDrxParameters &ie, OctetString &strea
     stream.appendOctet(static_cast<int>(ie.value));
 }
 
+// Kai
 IE5gMmCapability::IE5gMmCapability(EEpcNasSupported s1Mode, EHandoverAttachSupported hoAttach,
-                                   ELtePositioningProtocolCapability lpp)
-    : s1Mode(s1Mode), hoAttach(hoAttach), lpp(lpp)
+                                   ELtePositioningProtocolCapability lpp, E5gCpCIoT gCpCIoT)
+    : s1Mode(s1Mode), hoAttach(hoAttach), lpp(lpp), gCpCIoT(gCpCIoT)
 {
 }
 
@@ -877,16 +878,20 @@ IE5gMmCapability IE5gMmCapability::Decode(const OctetView &stream, int length)
 {
     auto octet = stream.read();
 
+    //Kai: TODO: add more fields here
     IE5gMmCapability r;
     r.s1Mode = static_cast<EEpcNasSupported>(octet.bit(0));
     r.hoAttach = static_cast<EHandoverAttachSupported>(octet.bit(1));
     r.lpp = static_cast<ELtePositioningProtocolCapability>(octet.bit(2));
+    r.gCpCIoT = static_cast<E5gCpCIoT>(octet.bit(5));
     return r;
 }
 
 void IE5gMmCapability::Encode(const IE5gMmCapability &ie, OctetString &stream)
 {
     int octet = 0;
+    octet |= static_cast<int>(ie.gCpCIoT);
+    octet <<= 2;
     octet |= static_cast<int>(ie.lpp);
     octet <<= 1;
     octet |= static_cast<int>(ie.hoAttach);

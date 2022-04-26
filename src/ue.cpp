@@ -233,6 +233,13 @@ static nr::ue::UeConfig *ReadConfigYaml()
         result->uacAcc.cls15 = yaml::GetBool(config["uacAcc"], "class15");
     }
 
+    // kai: add gmm capability
+    yaml::AssertHasField(config, "configured-GmmCapability");
+    result->gmmCapability.GmCpCiotSupport = yaml::GetBool(config["configured-GmmCapability"], "5gsCPOptimizationSupport");
+
+    yaml::AssertHasField(config, "configured-5gUpdateType");
+    result->updateType.GmCpCiot = yaml::GetBool(config["configured-5gUpdateType"], "5gsCPOptimization");
+
     return result;
 }
 
@@ -346,6 +353,8 @@ static nr::ue::UeConfig *GetConfigByUe(int ueIndex)
     c->integrityMaxRate = g_refConfig->integrityMaxRate;
     c->uacAic = g_refConfig->uacAic;
     c->uacAcc = g_refConfig->uacAcc;
+    c->gmmCapability = g_refConfig->gmmCapability;
+    c->updateType = g_refConfig->updateType;
 
     if (c->supi.has_value())
         IncrementNumber(c->supi->value, ueIndex);

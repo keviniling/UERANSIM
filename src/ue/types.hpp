@@ -69,6 +69,17 @@ struct SupportedAlgs
     bool nea3 = true;
 };
 
+//Kai: CIoT CP Optimization
+struct GmmCapability
+{
+    bool GmCpCiotSupport = true;
+};
+
+struct UpdateType
+{
+    bool GmCpCiot = true;
+};
+
 enum class OpType
 {
     OP,
@@ -106,6 +117,9 @@ struct UeConfig
     IntegrityMaxDataRateConfig integrityMaxRate{};
     NetworkSlice defaultConfiguredNssai{};
     NetworkSlice configuredNssai{};
+    GmmCapability gmmCapability{};
+    UpdateType updateType{};
+
 
     struct
     {

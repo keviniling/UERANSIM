@@ -89,6 +89,9 @@ EProcRc NasMm::sendInitialRegistration(EInitialRegCause regCause)
     request->mmCapability->hoAttach = nas::EHandoverAttachSupported::NOT_SUPPORTED;
     request->mmCapability->lpp = nas::ELtePositioningProtocolCapability::NOT_SUPPORTED;
 
+    //Kai: assign cp ciot
+    request->mmCapability->gCpCIoT = static_cast<nas::E5gCpCIoT>(m_base->config->gmmCapability.GmCpCiotSupport);
+
     // Assign other fields
     request->mobileIdentity = getOrGeneratePreferredId();
     if (m_storage->lastVisitedRegisteredTai->get().hasValue())
@@ -97,7 +100,7 @@ EProcRc NasMm::sendInitialRegistration(EInitialRegCause regCause)
         request->requestedNSSAI = nas::utils::NssaiFrom(requestedNssai);
     request->ueSecurityCapability = createSecurityCapabilityIe();
     request->updateType =
-        nas::IE5gsUpdateType(nas::ESmsRequested::NOT_SUPPORTED, nas::ENgRanRadioCapabilityUpdate::NOT_NEEDED);
+        nas::IE5gsUpdateType(nas::ESmsRequested::NOT_SUPPORTED, nas::ENgRanRadioCapabilityUpdate::NOT_NEEDED, nas::EpsPnbCiot::NO_ADDITIONAL_INFORMATION, static_cast<nas::GsPnbCiot>(m_base->config->updateType.GmCpCiot));
 
     // Assign ngKSI
     if (m_usim->m_currentNsCtx)
@@ -201,6 +204,8 @@ EProcRc NasMm::sendMobilityRegistration(ERegUpdateCause updateCause)
     request->updateType->ngRanRcu = updateCause == ERegUpdateCause::RADIO_CAP_CHANGE
                                         ? nas::ENgRanRadioCapabilityUpdate::NEEDED
                                         : nas::ENgRanRadioCapabilityUpdate::NOT_NEEDED;
+    //Kai: assign cp ciot
+    request->updateType->gsPnbCiot = static_cast<nas::GsPnbCiot>(m_base->config->updateType.GmCpCiot);
 
     // Assign uplink data status
     if (updateCause == ERegUpdateCause::FALLBACK_INDICATION || updateCause == ERegUpdateCause::CONNECTION_RECOVERY)
@@ -223,6 +228,7 @@ EProcRc NasMm::sendMobilityRegistration(ERegUpdateCause updateCause)
         request->mmCapability->s1Mode = nas::EEpcNasSupported::NOT_SUPPORTED;
         request->mmCapability->hoAttach = nas::EHandoverAttachSupported::NOT_SUPPORTED;
         request->mmCapability->lpp = nas::ELtePositioningProtocolCapability::NOT_SUPPORTED;
+        request->mmCapability->gCpCIoT = static_cast<nas::E5gCpCIoT>(m_base->config->gmmCapability.GmCpCiotSupport);
     }
 
     // Assign other fields
