@@ -303,9 +303,11 @@ struct IE5gsUpdateType : InformationElement4
 {
     ESmsRequested smsRequested{};
     ENgRanRadioCapabilityUpdate ngRanRcu{};
+    EpsPnbCiot epsPnbCiot{};
+    GsPnbCiot gsPnbCiot{};
 
     IE5gsUpdateType() = default;
-    IE5gsUpdateType(ESmsRequested smsRequested, ENgRanRadioCapabilityUpdate ngRanRcu);
+    IE5gsUpdateType(ESmsRequested smsRequested, ENgRanRadioCapabilityUpdate ngRanRcu, EpsPnbCiot epsPnbCiot, GsPnbCiot gsPnbCiot);
 
     static IE5gsUpdateType Decode(const OctetView &stream, int length);
     static void Encode(const IE5gsUpdateType &ie, OctetString &stream);

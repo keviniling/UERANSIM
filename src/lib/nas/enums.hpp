@@ -377,6 +377,23 @@ enum class ESmsRequested
     SUPPORTED = 0b1,
 };
 
+
+// Kai: add for CIoT optimization
+enum class EpsPnbCiot
+{
+    NO_ADDITIONAL_INFORMATION = 0b00,
+    CP_CIOT_EPS_OPTIMIZATION = 0b01,
+    UP_CIOT_EPS_OPTIMIZATION = 0b10,
+//    RESERVED = 0b11,
+};
+
+enum class GsPnbCiot
+{
+    NO_ADDITIONAL_INFORMATION = 0b00,
+    CP_CIOT_5GS_OPTIMIZATION = 0b01,
+    UP_CIOT_5GS_OPTIMIZATION = 0b10,
+};
+
 enum class EAccessType
 {
     THREEGPP_ACCESS = 0b01,

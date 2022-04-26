@@ -554,23 +554,34 @@ void IEAuthenticationParameterAutn::Encode(const IEAuthenticationParameterAutn &
     stream.append(ie.value);
 }
 
-IE5gsUpdateType::IE5gsUpdateType(ESmsRequested smsRequested, ENgRanRadioCapabilityUpdate ngRanRcu)
-    : smsRequested(smsRequested), ngRanRcu(ngRanRcu)
+// Kai: update IE here for CIoT Optimization
+IE5gsUpdateType::IE5gsUpdateType(ESmsRequested smsRequested, ENgRanRadioCapabilityUpdate ngRanRcu, EpsPnbCiot epsPnbCiot, GsPnbCiot gsPnbCiot)
+    : smsRequested(smsRequested), ngRanRcu(ngRanRcu), epsPnbCiot(epsPnbCiot), gsPnbCiot(gsPnbCiot)
 {
 }
 
 IE5gsUpdateType IE5gsUpdateType::Decode(const OctetView &stream, int length)
 {
+    octet octet = stream.read();
+
     IE5gsUpdateType r;
-    r.smsRequested = static_cast<ESmsRequested>(stream.peekI() & 0b1);
-    r.ngRanRcu = static_cast<ENgRanRadioCapabilityUpdate>((stream.readI() >> 1) & 0b1);
+    r.epsPnbCiot = static_cast<EpsPnbCiot>(bits::BitRange8<5,6>(octet));
+    r.gsPnbCiot = static_cast<GsPnbCiot>(bits::BitRange8<3,4>(octet));
+    r.ngRanRcu = static_cast<ENgRanRadioCapabilityUpdate>(octet.bit(1));
+    r.smsRequested = static_cast<ESmsRequested>(octet.bit(0));
+
+
+//    r.smsRequested = static_cast<ESmsRequested>(stream.peekI() & 0b1);
+//    r.ngRanRcu = static_cast<ENgRanRadioCapabilityUpdate>((stream.readI() >> 1) & 0b1);
+
     return r;
 }
 
+// Kai: update here for CIoT Optimization, refer to TS24.501 9.11.3.9A
 void IE5gsUpdateType::Encode(const IE5gsUpdateType &ie, OctetString &stream)
 {
     stream.appendOctet(
-        bits::Ranged8({{6, 0}, {1, static_cast<int>(ie.ngRanRcu)}, {1, static_cast<int>(ie.smsRequested)}}));
+        bits::Ranged8({{2, 0},{2, static_cast<int>(ie.epsPnbCiot)},{2, static_cast<int>(ie.gsPnbCiot)}, {1, static_cast<int>(ie.ngRanRcu)}, {1, static_cast<int>(ie.smsRequested)}}));
 }
 
 IEUplinkDataStatus::IEUplinkDataStatus(std::bitset<16> psi) : psi(psi)
